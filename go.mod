@@ -4,11 +4,9 @@ go 1.18
 
 require (
 	github.com/go-numb/go-dydx v0.0.0-20220329194222-4f7ad846fde0
-	github.com/phoebetron/trades v0.5.0
+	github.com/phoebetron/trades v0.5.1
 	google.golang.org/protobuf v1.28.1
 )
-
-replace github.com/phoebetron/trades => /Users/xh3b4sd/project/phoebetron/trades
 
 require (
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
