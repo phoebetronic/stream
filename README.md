@@ -9,6 +9,7 @@ import (
 
 	"github.com/phoebetron/stream/dydxstreamcli"
 	"github.com/phoebetron/stream/ftxstreamcli"
+	"github.com/phoebetron/stream/merger"
 	"github.com/phoebetron/trades/typ/market"
 	"github.com/phoebetron/trades/typ/trades"
 )
@@ -30,18 +31,30 @@ func main() {
 		}),
 	})
 
-	str := Stream(map[string]chan *trades.Trades{
-		"dydx": dyd.Trades(),
-		"ftx":  ftx.Trades(),
+	str := merger.New(merger.Config{
+		Src: map[string]chan *trades.Trades{
+			"ftx": ftx.Trades(),
+		},
+		Dst: map[string]chan *trades.Trades{
+			"dydx": dyd.Trades(),
+		},
 	})
 
-	for m := range str {
-		for k, v := range m {
-			fmt.Printf("%s (%s/%s)\n", k, v.EX, v.AS)
+	for t := range str.Trades() {
+		for _, v := range t.Src {
+			fmt.Printf("src (%s/%s)\n", v.EX, v.AS)
 			for _, t := range v.TR {
-				fmt.Printf("    TS %s\n", t.TS.AsTime())
+				fmt.Printf("    TR %f (%s)\n", t.PR, t.TS.AsTime())
 			}
 		}
+
+		for _, v := range t.Dst {
+			fmt.Printf("dst (%s/%s)\n", v.EX, v.AS)
+			for _, t := range v.TR {
+				fmt.Printf("    TR %f (%s)\n", t.PR, t.TS.AsTime())
+			}
+		}
+
 		fmt.Printf("\n")
 		fmt.Printf("\n")
 		fmt.Printf("\n")
@@ -52,40 +65,28 @@ func main() {
 
 ```
 $ go run main.go
-dydx (dydx/eth)
-    TS 2022-08-28 21:45:43.067 +0000 UTC
-    TS 2022-08-28 21:45:43.068 +0000 UTC
-    TS 2022-08-28 21:45:43.097 +0000 UTC
-    ...
-ftx (ftx/eth)
-    TS 2022-08-28 21:45:43.099344 +0000 UTC
-    TS 2022-08-28 21:45:43.100027 +0000 UTC
-    TS 2022-08-28 21:45:43.101325 +0000 UTC
-    ...
+src (ftx/eth)
+    TR 1573.500000 (2022-09-05 13:04:57.215866 +0000 UTC)
+    TR 1573.500000 (2022-09-05 13:04:57.216515 +0000 UTC)
+dst (dydx/eth)
+    TR 1573.400024 (2022-09-05 13:04:57 +0000 UTC)
 
 
 
-ftx (ftx/eth)
-    TS 2022-08-28 21:45:44.036106 +0000 UTC
-    TS 2022-08-28 21:45:44.036584 +0000 UTC
-    TS 2022-08-28 21:45:44.036584 +0000 UTC
-    ...
-dydx (dydx/eth)
-    TS 2022-08-28 21:45:44.124 +0000 UTC
-    TS 2022-08-28 21:45:44.165 +0000 UTC
-    TS 2022-08-28 21:45:44.166 +0000 UTC
-    ...
+src (ftx/eth)
+    TR 1573.599976 (2022-09-05 13:04:58.050723 +0000 UTC)
+dst (dydx/eth)
+    TR 1573.400024 (2022-09-05 13:04:58 +0000 UTC)
 
 
 
-ftx (ftx/eth)
-    TS 2022-08-28 21:45:45.028686 +0000 UTC
-    TS 2022-08-28 21:45:45.030149 +0000 UTC
-    TS 2022-08-28 21:45:45.030749 +0000 UTC
-    ...
-dydx (dydx/eth)
-    TS 2022-08-28 21:45:45.134 +0000 UTC
-    TS 2022-08-28 21:45:45.134 +0000 UTC
-    TS 2022-08-28 21:45:45.134 +0000 UTC
-    ...
+src (ftx/eth)
+    TR 1573.500000 (2022-09-05 13:04:59.234147 +0000 UTC)
+dst (dydx/eth)
+    TR 1573.599976 (2022-09-05 13:04:59.549 +0000 UTC)
+    TR 1573.699951 (2022-09-05 13:04:59.549 +0000 UTC)
+
+
+
+...
 ```

@@ -4,7 +4,7 @@ import (
 	"github.com/phoebetron/trades/typ/trades"
 )
 
-type Interface interface {
+type Stream interface {
 	// Trades returns a channel that streams Trades buffers with a buffer length
 	// provided by the underlying market. Using a buffer length of e.g. 1 second
 	// would buffer all trades that happened within the same second and send all
@@ -15,4 +15,10 @@ type Interface interface {
 	// at least a single trade, which is the last known trade pointing to the
 	// last known price.
 	Trades() chan *trades.Trades
+}
+
+type Merger interface {
+	Direct() Direct
+	Trades() chan Trades
+	Volume() Volume
 }
