@@ -8,6 +8,6 @@ type Config struct {
 
 func (c Config) Verify() {
 	if c.Mar == nil {
-		panic("Config.Market must not be empty")
+		panic("Config.Mar must not be empty")
 	}
 }
