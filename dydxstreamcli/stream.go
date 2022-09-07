@@ -9,6 +9,8 @@ import (
 
 	"github.com/go-numb/go-dydx/public"
 	"github.com/go-numb/go-dydx/realtime"
+	"github.com/phoebetron/dydxv3/client"
+	"github.com/phoebetron/dydxv3/client/public/trade"
 	"github.com/phoebetron/trades/typ/buffer"
 	"github.com/phoebetron/trades/typ/market"
 	"github.com/phoebetron/trades/typ/trades"
@@ -16,8 +18,9 @@ import (
 )
 
 type Stream struct {
-	buf buffer.Interface
-	mar market.Interface
+	buf buffer.Buffer
+	cli *client.Client
+	mar market.Market
 }
 
 func New(con Config) *Stream {
@@ -25,21 +28,54 @@ func New(con Config) *Stream {
 		con.Verify()
 	}
 
-	var buf buffer.Interface
+	var buf buffer.Buffer
 	{
 		buf = buffer.New(buffer.Config{
 			Mar: con.Mar,
 		})
 	}
 
+	var cli *client.Client
+	{
+		cli = client.New(client.Config{})
+	}
+
 	return &Stream{
 		buf: buf,
+		cli: cli,
 		mar: con.Mar,
 	}
 }
 
 func (s *Stream) Trades() chan *trades.Trades {
 	res := make(chan realtime.Response)
+
+	go func() {
+		var err error
+
+		var req trade.ListRequest
+		{
+			req = trade.ListRequest{
+				Market: fmt.Sprintf("%s-USD", strings.ToUpper(s.mar.Ass())),
+				Limit:  1,
+			}
+		}
+
+		var res trade.ListResponse
+		{
+			res, err = s.cli.Pub.Tra.List(req)
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		s.buf.Latest(mustra(public.Trade{
+			Side:      res.Trades[0].Side,
+			Size:      res.Trades[0].Size,
+			Price:     res.Trades[0].Price,
+			CreatedAt: res.Trades[0].CreatedAt,
+		}))
+	}()
 
 	go func() {
 		err := realtime.Connect(
@@ -81,7 +117,9 @@ func (s *Stream) Trades() chan *trades.Trades {
 		for re := range res {
 			switch re.Channel {
 			case realtime.TRADES:
-				s.trades(re.Trades.Trades)
+				for _, r := range re.Trades.Trades {
+					s.buf.Buffer(mustra(r))
+				}
 			case realtime.ERROR:
 				panic(re.Results)
 			case realtime.UNDEFINED:
@@ -93,28 +131,6 @@ func (s *Stream) Trades() chan *trades.Trades {
 	return s.buf.Trades()
 }
 
-func (s *Stream) trades(raw []public.Trade) {
-	for _, r := range raw {
-		t := &trades.Trade{}
-		{
-			t.PR = musf32(r.Price)
-			t.TS = timestamppb.New(r.CreatedAt)
-		}
-
-		if strings.ToLower(r.Side) == "buy" {
-			t.LO = musf32(r.Size)
-		}
-
-		if strings.ToLower(r.Side) == "sell" {
-			t.SH = musf32(r.Size)
-		}
-
-		{
-			s.buf.Buffer(t)
-		}
-	}
-}
-
 func musf32(s string) float32 {
 	f, e := strconv.ParseFloat(s, 32)
 	if e != nil {
@@ -122,4 +138,22 @@ func musf32(s string) float32 {
 	}
 
 	return float32(f)
+}
+
+func mustra(r public.Trade) *trades.Trade {
+	t := &trades.Trade{}
+	{
+		t.PR = musf32(r.Price)
+		t.TS = timestamppb.New(r.CreatedAt)
+	}
+
+	if strings.ToLower(r.Side) == "buy" {
+		t.LO = musf32(r.Size)
+	}
+
+	if strings.ToLower(r.Side) == "sell" {
+		t.SH = musf32(r.Size)
+	}
+
+	return t
 }
