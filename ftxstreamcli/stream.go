@@ -17,8 +17,8 @@ import (
 )
 
 type Stream struct {
-	buf buffer.Interface
-	mar market.Interface
+	buf buffer.Buffer
+	mar market.Market
 }
 
 func New(con Config) *Stream {
@@ -26,7 +26,7 @@ func New(con Config) *Stream {
 		con.Verify()
 	}
 
-	var buf buffer.Interface
+	var buf buffer.Buffer
 	{
 		buf = buffer.New(buffer.Config{
 			Mar: con.Mar,
