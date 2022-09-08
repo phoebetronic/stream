@@ -10,6 +10,8 @@ import (
 
 	"github.com/go-numb/go-ftx/realtime"
 	"github.com/go-numb/go-ftx/rest/public/markets"
+	"github.com/phoebetron/ftxapi/client"
+	"github.com/phoebetron/ftxapi/client/public/trade"
 	"github.com/phoebetron/trades/typ/buffer"
 	"github.com/phoebetron/trades/typ/market"
 	"github.com/phoebetron/trades/typ/trades"
@@ -18,6 +20,7 @@ import (
 
 type Stream struct {
 	buf buffer.Buffer
+	cli *client.Client
 	mar market.Market
 }
 
@@ -33,14 +36,47 @@ func New(con Config) *Stream {
 		})
 	}
 
+	var cli *client.Client
+	{
+		cli = client.New(client.Config{})
+	}
+
 	return &Stream{
 		buf: buf,
+		cli: cli,
 		mar: con.Mar,
 	}
 }
 
 func (s *Stream) Trades() chan *trades.Trades {
 	res := make(chan realtime.Response)
+
+	go func() {
+		var err error
+
+		var req trade.ListRequest
+		{
+			req = trade.ListRequest{
+				ProductCode: fmt.Sprintf("%s-PERP", strings.ToUpper(s.mar.Ass())),
+				Limit:       1,
+			}
+		}
+
+		var res trade.ListResponse
+		{
+			res, err = s.cli.Pub.Tra.List(req)
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		s.buf.Latest(mustra(markets.Trade{
+			Side:  res.Result[0].Side,
+			Size:  res.Result[0].Size,
+			Price: res.Result[0].Price,
+			Time:  res.Result[0].Time,
+		}))
+	}()
 
 	go func() {
 		err := realtime.Connect(
@@ -81,7 +117,9 @@ func (s *Stream) Trades() chan *trades.Trades {
 		for re := range res {
 			switch re.Type {
 			case realtime.TRADES:
-				s.trades(re.Trades)
+				for _, r := range re.Trades {
+					s.buf.Buffer(mustra(r))
+				}
 			case realtime.ERROR:
 				panic(re.Results)
 			case realtime.UNDEFINED:
@@ -93,24 +131,20 @@ func (s *Stream) Trades() chan *trades.Trades {
 	return s.buf.Trades()
 }
 
-func (s *Stream) trades(raw []markets.Trade) {
-	for _, r := range raw {
-		t := &trades.Trade{}
-		{
-			t.PR = float32(r.Price)
-			t.TS = timestamppb.New(r.Time)
-		}
-
-		if strings.ToLower(r.Side) == "buy" {
-			t.LO = float32(r.Size)
-		}
-
-		if strings.ToLower(r.Side) == "sell" {
-			t.SH = float32(r.Size)
-		}
-
-		{
-			s.buf.Buffer(t)
-		}
+func mustra(r markets.Trade) *trades.Trade {
+	t := &trades.Trade{}
+	{
+		t.PR = float32(r.Price)
+		t.TS = timestamppb.New(r.Time)
 	}
+
+	if strings.ToLower(r.Side) == "buy" {
+		t.LO = float32(r.Size)
+	}
+
+	if strings.ToLower(r.Side) == "sell" {
+		t.SH = float32(r.Size)
+	}
+
+	return t
 }
