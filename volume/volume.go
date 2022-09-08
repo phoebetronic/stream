@@ -31,12 +31,12 @@ func (v *Volume) Sample(tra *trades.Trades) {
 	}
 
 	if len(v.vol) > v.his {
-		{
-			copy(v.vol[0:], v.vol[1:])
-			v.vol[len(v.vol)-1] = stream.Volume{}
-			v.vol = v.vol[:len(v.vol)-1]
-		}
+		copy(v.vol[0:], v.vol[1:])
+		v.vol[len(v.vol)-1] = stream.Volume{}
+		v.vol = v.vol[:len(v.vol)-1]
+	}
 
+	if len(v.vol) > 1 {
 		var lon float32
 		var sho float32
 

@@ -48,8 +48,6 @@ func New(con Config) *Stream {
 }
 
 func (s *Stream) Trades() chan *trades.Trades {
-	res := make(chan realtime.Response)
-
 	go func() {
 		var err error
 
@@ -78,16 +76,48 @@ func (s *Stream) Trades() chan *trades.Trades {
 	}()
 
 	go func() {
-		err := realtime.Connect(
-			context.Background(),
-			res,
-			[]string{realtime.TRADES},
-			[]string{fmt.Sprintf("%s-USD", strings.ToUpper(s.mar.Ass()))},
-			nil,
-			nil,
-		)
-		if err != nil {
-			panic(err)
+		for {
+			clo := make(chan struct{})
+			res := make(chan realtime.Response)
+
+			go func() {
+				err := realtime.Connect(
+					context.Background(),
+					res,
+					[]string{realtime.TRADES},
+					[]string{fmt.Sprintf("%s-USD", strings.ToUpper(s.mar.Ass()))},
+					nil,
+					nil,
+				)
+				if err != nil {
+					panic(err)
+				}
+			}()
+
+			go func() {
+				for re := range res {
+					switch re.Channel {
+					case realtime.TRADES:
+						for _, r := range re.Trades.Trades {
+							s.buf.Buffer(mustra(r))
+						}
+					case realtime.ERROR:
+						close(clo)
+						return
+					case realtime.UNDEFINED:
+						close(clo)
+						return
+					}
+				}
+			}()
+
+			{
+				<-clo
+			}
+
+			{
+				fmt.Printf("restarting dydx websocket\n")
+			}
 		}
 	}()
 
@@ -109,21 +139,6 @@ func (s *Stream) Trades() chan *trades.Trades {
 
 			{
 				s.buf.Finish(time.Now().UTC())
-			}
-		}
-	}()
-
-	go func() {
-		for re := range res {
-			switch re.Channel {
-			case realtime.TRADES:
-				for _, r := range re.Trades.Trades {
-					s.buf.Buffer(mustra(r))
-				}
-			case realtime.ERROR:
-				panic(re.Results)
-			case realtime.UNDEFINED:
-				panic(re.Results)
 			}
 		}
 	}()

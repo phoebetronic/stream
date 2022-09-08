@@ -35,17 +35,17 @@ func (d *Direct) Sample(tra *trades.Trades) {
 	}
 
 	if len(d.tra) > d.his {
-		{
-			copy(d.tra[0:], d.tra[1:])
-			d.tra[len(d.tra)-1] = nil
-			d.tra = d.tra[:len(d.tra)-1]
-		}
+		copy(d.tra[0:], d.tra[1:])
+		d.tra[len(d.tra)-1] = nil
+		d.tra = d.tra[:len(d.tra)-1]
+	}
 
+	if len(d.tra) > 1 {
 		{
 			d.res = 0
 		}
 
-		for i := 1; i < d.his; i++ {
+		for i := 1; i < len(d.tra); i++ {
 			d.res += res(d.tra[i-1].PR().Avg(), d.tra[i].PR().Avg())
 		}
 	}
