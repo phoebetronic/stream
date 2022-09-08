@@ -49,7 +49,6 @@ func New(con Config) *Stream {
 }
 
 func (s *Stream) Trades() chan *trades.Trades {
-	res := make(chan realtime.Response)
 
 	go func() {
 		var err error
@@ -79,15 +78,47 @@ func (s *Stream) Trades() chan *trades.Trades {
 	}()
 
 	go func() {
-		err := realtime.Connect(
-			context.Background(),
-			res,
-			[]string{"trades"},
-			[]string{fmt.Sprintf("%s-PERP", strings.ToUpper(s.mar.Ass()))},
-			log.New(ioutil.Discard, "", 0),
-		)
-		if err != nil {
-			panic(err)
+		for {
+			clo := make(chan struct{})
+			res := make(chan realtime.Response)
+
+			go func() {
+				err := realtime.Connect(
+					context.Background(),
+					res,
+					[]string{"trades"},
+					[]string{fmt.Sprintf("%s-PERP", strings.ToUpper(s.mar.Ass()))},
+					log.New(ioutil.Discard, "", 0),
+				)
+				if err != nil {
+					panic(err)
+				}
+			}()
+
+			go func() {
+				for re := range res {
+					switch re.Type {
+					case realtime.TRADES:
+						for _, r := range re.Trades {
+							s.buf.Buffer(mustra(r))
+						}
+					case realtime.ERROR:
+						close(clo)
+						return
+					case realtime.UNDEFINED:
+						close(clo)
+						return
+					}
+				}
+			}()
+
+			{
+				<-clo
+			}
+
+			{
+				fmt.Printf("restarting ftx websocket\n")
+			}
 		}
 	}()
 
@@ -109,21 +140,6 @@ func (s *Stream) Trades() chan *trades.Trades {
 
 			{
 				s.buf.Finish(time.Now().UTC())
-			}
-		}
-	}()
-
-	go func() {
-		for re := range res {
-			switch re.Type {
-			case realtime.TRADES:
-				for _, r := range re.Trades {
-					s.buf.Buffer(mustra(r))
-				}
-			case realtime.ERROR:
-				panic(re.Results)
-			case realtime.UNDEFINED:
-				panic(re.Results)
 			}
 		}
 	}()
