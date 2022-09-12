@@ -62,8 +62,8 @@ github.com/opencontainers/go-digest v1.0.0-rc1 h1:WzifXhOVOEOuFYOJAW6aQqW0TooG2i
 github.com/opencontainers/image-spec v1.0.1 h1:JMemWkRwHx4Zj+fVxWoMCFm/8sYGGrUVojFA6h/TRcI=
 github.com/opencontainers/runc v0.1.1 h1:GlxAyO6x8rfZYN9Tt0Kti5a/cP41iuiO2yYT0IJGY8Y=
 github.com/ory/dockertest v3.3.5+incompatible h1:iLLK6SQwIhcbrG783Dghaaa3WPzGc+4Emza6EbVUUGA=
-github.com/phoebetron/dydxv3 v0.4.3 h1:RyX8jfMSlMekxbGMiT7s+FNsxlPSoQQOqsA0gni677c=
-github.com/phoebetron/dydxv3 v0.4.3/go.mod h1:/WXgEtCeEut1R37l1iYm6cod1we7Bpu9wYMHjn/cXEk=
+github.com/phoebetron/dydxv3 v0.4.4 h1:Spoq7pw9sCdyjeAzIahnY7NFR/yvnBwHH6BJtLU4Qh0=
+github.com/phoebetron/dydxv3 v0.4.4/go.mod h1:BPC5PXlWZr274bFoLwjHqmoPhU1ZCkz78wCSdLJuo/E=
 github.com/phoebetron/ftxapi v0.1.1 h1:oNKB8vsU5tUxNmVBNK6BH6uPuK6AollaXW5pHebHQEM=
 github.com/phoebetron/ftxapi v0.1.1/go.mod h1:HTzvMuJwZdfLBDqc+Eym3M8yzaw+iWGoRTnFUPnihek=
 github.com/phoebetron/trades v0.6.0 h1:FDfUNQRtC06lADeJAdo34uM19hR3TbSoyIU5Ht5Vc1c=
