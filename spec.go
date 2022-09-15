@@ -1,10 +1,12 @@
 package stream
 
 import (
+	"github.com/go-numb/go-dydx/public"
 	"github.com/phoebetron/trades/typ/trades"
 )
 
 type Stream interface {
+	Orders() chan public.OrderbookResponse
 	// Trades returns a channel that streams Trades buffers with a buffer length
 	// provided by the underlying market. Using a buffer length of e.g. 1 second
 	// would buffer all trades that happened within the same second and send all
@@ -18,7 +20,7 @@ type Stream interface {
 }
 
 type Merger interface {
-	Direct() Direct
+	Direct(key ...string) Direct
 	Trades() chan Trades
-	Volume() Volume
+	Volume(key ...string) Volume
 }

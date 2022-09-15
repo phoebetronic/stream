@@ -21,12 +21,15 @@ func New(con Config) *Merger {
 	}
 
 	dir := map[string]*direct.Direct{}
+	vol := map[string]*volume.Volume{}
+
 	for k := range con.Src {
 		dir[k] = direct.New(con.Dir)
+		vol[k] = volume.New(con.Vol)
 	}
 
-	vol := map[string]*volume.Volume{}
 	for k := range con.Dst {
+		dir[k] = direct.New(con.Dir)
 		vol[k] = volume.New(con.Vol)
 	}
 
@@ -38,11 +41,17 @@ func New(con Config) *Merger {
 	}
 }
 
-func (m *Merger) Direct() stream.Direct {
+func (m *Merger) Direct(key ...string) stream.Direct {
 	var sum float32
 
-	for _, v := range m.dir {
-		sum += v.Result()
+	for k, v := range m.dir {
+		if !contains(key, k) {
+			continue
+		}
+
+		{
+			sum += v.Result()
+		}
 	}
 
 	return stream.Direct{Dir: sum / float32(len(m.dir))}
@@ -73,6 +82,7 @@ func (m *Merger) Trades() chan stream.Trades {
 
 				{
 					m.dir[k].Sample(p)
+					m.vol[k].Sample(p)
 				}
 			}
 
@@ -87,6 +97,7 @@ func (m *Merger) Trades() chan stream.Trades {
 				}
 
 				{
+					m.dir[k].Sample(p)
 					m.vol[k].Sample(p)
 				}
 			}
@@ -100,14 +111,36 @@ func (m *Merger) Trades() chan stream.Trades {
 	return tra
 }
 
-func (m *Merger) Volume() stream.Volume {
+func (m *Merger) Volume(key ...string) stream.Volume {
+	var net float32
 	var lon float32
 	var sho float32
 
-	for _, v := range m.vol {
-		lon += v.Result().Lon
-		sho += v.Result().Sho
+	for k, v := range m.vol {
+		if !contains(key, k) {
+			continue
+		}
+
+		{
+			net += v.Result().Net
+			lon += v.Result().Lon
+			sho += v.Result().Sho
+		}
 	}
 
-	return stream.Volume{Lon: lon / float32(len(m.vol)), Sho: sho / float32(len(m.vol))}
+	return stream.Volume{
+		Net: net / float32(len(m.vol)),
+		Lon: lon / float32(len(m.vol)),
+		Sho: sho / float32(len(m.vol)),
+	}
+}
+
+func contains(lis []string, ele string) bool {
+	for _, e := range lis {
+		if e == ele {
+			return true
+		}
+	}
+
+	return false
 }

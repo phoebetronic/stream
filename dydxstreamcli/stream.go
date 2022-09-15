@@ -47,6 +47,56 @@ func New(con Config) *Stream {
 	}
 }
 
+func (s *Stream) Orders() chan public.OrderbookResponse {
+	ord := make(chan public.OrderbookResponse)
+
+	go func() {
+		for {
+			clo := make(chan struct{})
+			res := make(chan realtime.Response)
+
+			go func() {
+				err := realtime.Connect(
+					context.Background(),
+					res,
+					[]string{realtime.ORDERBOOK},
+					[]string{fmt.Sprintf("%s-USD", strings.ToUpper(s.mar.Ass()))},
+					nil,
+					nil,
+				)
+				if err != nil {
+					panic(err)
+				}
+			}()
+
+			go func() {
+				for re := range res {
+					switch re.Channel {
+					case realtime.ORDERBOOK:
+						ord <- re.Orderbook
+					case realtime.ERROR:
+						close(clo)
+						return
+					case realtime.UNDEFINED:
+						close(clo)
+						return
+					}
+				}
+			}()
+
+			{
+				<-clo
+			}
+
+			{
+				fmt.Printf("restarting dydx websocket\n")
+			}
+		}
+	}()
+
+	return ord
+}
+
 func (s *Stream) Trades() chan *trades.Trades {
 	go func() {
 		var err error
