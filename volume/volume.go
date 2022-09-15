@@ -6,9 +6,8 @@ import (
 )
 
 type Volume struct {
-	his int
 	res stream.Volume
-	vol []stream.Volume
+	sli *Slicer
 }
 
 func New(con Config) *Volume {
@@ -21,33 +20,51 @@ func New(con Config) *Volume {
 	}
 
 	return &Volume{
-		his: con.His,
+		sli: &Slicer{
+			his: con.His,
+		},
 	}
 }
 
 func (v *Volume) Sample(tra *trades.Trades) {
 	{
-		v.vol = append(v.vol, stream.Volume{Lon: tra.LO().Sum(), Sho: tra.SH().Sum()})
+		var lon float32
+		{
+			lon = tra.LO().Sum()
+		}
+
+		var sho float32
+		{
+			sho = tra.SH().Sum()
+		}
+
+		var net float32
+		{
+			net = lon - sho
+		}
+
+		v.sli.Add(stream.Volume{
+			Net: net,
+			Lon: lon,
+			Sho: sho,
+		})
 	}
 
-	if len(v.vol) > v.his {
-		copy(v.vol[0:], v.vol[1:])
-		v.vol[len(v.vol)-1] = stream.Volume{}
-		v.vol = v.vol[:len(v.vol)-1]
-	}
-
-	if len(v.vol) > 1 {
+	{
+		var net float32
 		var lon float32
 		var sho float32
 
-		for i := range v.vol {
-			lon += v.vol[i].Lon
-			sho += v.vol[i].Sho
+		for _, f := range v.sli.Lis() {
+			net += f.Net
+			lon += f.Lon
+			sho += f.Sho
 		}
 
 		{
-			v.res.Lon = lon / float32(v.his)
-			v.res.Sho = sho / float32(v.his)
+			v.res.Net = net
+			v.res.Lon = lon
+			v.res.Sho = sho
 		}
 	}
 }

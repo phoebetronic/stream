@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-numb/go-dydx/public"
 	"github.com/go-numb/go-ftx/realtime"
 	"github.com/go-numb/go-ftx/rest/public/markets"
 	"github.com/phoebetron/ftxapi/client"
@@ -46,6 +47,10 @@ func New(con Config) *Stream {
 		cli: cli,
 		mar: con.Mar,
 	}
+}
+
+func (s *Stream) Orders() chan public.OrderbookResponse {
+	panic("Stream.Orders is not implemented for FTX")
 }
 
 func (s *Stream) Trades() chan *trades.Trades {

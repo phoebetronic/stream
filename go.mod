@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/go-numb/go-dydx v0.0.0-20220329194222-4f7ad846fde0
 	github.com/go-numb/go-ftx v0.0.0-20220818143936-53c29f1a8387
-	github.com/phoebetron/dydxv3 v0.4.4
+	github.com/phoebetron/dydxv3 v0.4.5
 	github.com/phoebetron/ftxapi v0.1.1
 	github.com/phoebetron/trades v0.6.0
 	google.golang.org/protobuf v1.28.1
@@ -36,7 +36,7 @@ require (
 	github.com/valyala/fastjson v1.4.1 // indirect
 	github.com/xh3b4sd/framer v0.3.1 // indirect
 	github.com/xh3b4sd/tracer v0.5.1 // indirect
-	github.com/yanue/starkex v0.0.0-20211122094927-61a9aa6b8d97 // indirect
+	github.com/yanue/starkex v0.0.0-20220816084859-199db002c96f // indirect
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 )
