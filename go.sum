@@ -66,8 +66,8 @@ github.com/phoebetron/dydxv3 v0.4.5 h1:y2t2l2qQpa0VW7Y9jYDuDcvBHUziLoMSQ23A6f2cv
 github.com/phoebetron/dydxv3 v0.4.5/go.mod h1:HI7mJjMXvPYdXgiLCTqIOksCKdVF1LoHj0IH1SxsjUU=
 github.com/phoebetron/ftxapi v0.1.1 h1:oNKB8vsU5tUxNmVBNK6BH6uPuK6AollaXW5pHebHQEM=
 github.com/phoebetron/ftxapi v0.1.1/go.mod h1:HTzvMuJwZdfLBDqc+Eym3M8yzaw+iWGoRTnFUPnihek=
-github.com/phoebetron/trades v0.6.0 h1:FDfUNQRtC06lADeJAdo34uM19hR3TbSoyIU5Ht5Vc1c=
-github.com/phoebetron/trades v0.6.0/go.mod h1:azXkjKAhGRB7rmx6UyLeq11SS0hZLd1VEaMKj8OU7GI=
+github.com/phoebetron/trades v0.7.0 h1:BUscU1v5txVzb08Fm+UWtsFh7xN1suIphc8pw5dbQSU=
+github.com/phoebetron/trades v0.7.0/go.mod h1:tnwtUdofiVquA6zKbjLhCyhXHp1SI9WX2IUGLga0T28=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=

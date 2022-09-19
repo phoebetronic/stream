@@ -13,9 +13,9 @@ import (
 	"github.com/go-numb/go-ftx/rest/public/markets"
 	"github.com/phoebetron/ftxapi/client"
 	"github.com/phoebetron/ftxapi/client/public/trade"
-	"github.com/phoebetron/trades/typ/buffer"
 	"github.com/phoebetron/trades/typ/market"
 	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetron/trades/typ/trades/buffer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
