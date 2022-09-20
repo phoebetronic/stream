@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/go-numb/go-dydx v0.0.0-20220329194222-4f7ad846fde0
 	github.com/go-numb/go-ftx v0.0.0-20220818143936-53c29f1a8387
-	github.com/phoebetron/dydxv3 v0.4.5
+	github.com/phoebetron/dydxv3 v0.4.6
 	github.com/phoebetron/ftxapi v0.1.1
 	github.com/phoebetron/trades v0.7.0
 	google.golang.org/protobuf v1.28.1
@@ -17,7 +17,7 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
-	github.com/ethereum/go-ethereum v1.10.23 // indirect
+	github.com/ethereum/go-ethereum v1.10.25 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
