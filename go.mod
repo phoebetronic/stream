@@ -7,7 +7,7 @@ require (
 	github.com/go-numb/go-ftx v0.0.0-20220818143936-53c29f1a8387
 	github.com/phoebetron/dydxv3 v0.4.6
 	github.com/phoebetron/ftxapi v0.1.1
-	github.com/phoebetron/trades v0.7.1
+	github.com/phoebetron/trades v0.7.2
 	google.golang.org/protobuf v1.28.1
 )
 
