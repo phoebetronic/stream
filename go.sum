@@ -66,8 +66,8 @@ github.com/phoebetron/dydxv3 v0.4.6 h1:ofZ8p8uTdUafDBHTdd0VieUO/g5aSDiKuvW9++/Gv
 github.com/phoebetron/dydxv3 v0.4.6/go.mod h1:UzbdCUCLyo3tsNhLie75AmtrvJbRIekwdyd7P+61lwE=
 github.com/phoebetron/ftxapi v0.1.1 h1:oNKB8vsU5tUxNmVBNK6BH6uPuK6AollaXW5pHebHQEM=
 github.com/phoebetron/ftxapi v0.1.1/go.mod h1:HTzvMuJwZdfLBDqc+Eym3M8yzaw+iWGoRTnFUPnihek=
-github.com/phoebetron/trades v0.7.1 h1:p8eWhvDDzqVMmAjRBaIyHXfA8oQJ6scs2NYa8B758XQ=
-github.com/phoebetron/trades v0.7.1/go.mod h1:tnwtUdofiVquA6zKbjLhCyhXHp1SI9WX2IUGLga0T28=
+github.com/phoebetron/trades v0.7.3 h1:Gdjwwp2csyfxzgvrGE+OQKnwdZ5U9Hcw9AzJauQ33kY=
+github.com/phoebetron/trades v0.7.3/go.mod h1:uwUdR8D/vGwrfjR2fsOi+jkgQiGAG+GUoXbqDmVCsOE=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
@@ -91,8 +91,8 @@ github.com/valyala/fasthttp v1.34.0/go.mod h1:epZA5N+7pY6ZaEKRmstzOuYJx9HI8DI1oa
 github.com/valyala/fastjson v1.4.1 h1:hrltpHpIpkaxll8QltMU8c3QZ5+qIiCL8yKqPFJI/yE=
 github.com/valyala/fastjson v1.4.1/go.mod h1:nV6MsjxL2IMJQUoHDIrjEI7oLyeqK6aBD7EFWPsvP8o=
 github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
-github.com/xh3b4sd/framer v0.3.1 h1:N4s8nUV6c1r2J0kFCoW7c0307P4urJ0mbduMboIs8SQ=
-github.com/xh3b4sd/framer v0.3.1/go.mod h1:LXuYCOHKoD8JFfDbJQ7RTFutQiYv80jO7v4lzVxUiYY=
+github.com/xh3b4sd/framer v0.4.0 h1:p3xOz9i45rJIuNUog+o30iMOhzzRac091D1zlRzmXMU=
+github.com/xh3b4sd/framer v0.4.0/go.mod h1:O9mbD97ERLQJ3d8gO7Sq4Hy9WNDoYIT43Z/okh/j+UU=
 github.com/xh3b4sd/tracer v0.5.1 h1:Y4639ve7PT+1MSiq0I3Yi7vOeJAYBKgzlSR68jA+SuI=
 github.com/xh3b4sd/tracer v0.5.1/go.mod h1:sYg6KI0svCEb2an8Hf0cYR0rOY94bIrN27TRsJi4+x4=
 github.com/yanue/starkex v0.0.0-20220816084859-199db002c96f h1:EBkD8u6WKxhQHzBWZcy0m2FD01VLOXUzOEtGSXyu7T8=
