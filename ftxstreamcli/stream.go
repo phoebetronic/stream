@@ -3,7 +3,7 @@ package ftxstreamcli
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"strings"
 	"time"
@@ -93,7 +93,7 @@ func (s *Stream) Trades() chan *trades.Trades {
 					res,
 					[]string{"trades"},
 					[]string{fmt.Sprintf("%s-PERP", strings.ToUpper(s.mar.Ass()))},
-					log.New(ioutil.Discard, "", 0),
+					log.New(io.Discard, "", 0),
 				)
 				if err != nil {
 					panic(err)
