@@ -3,7 +3,7 @@ package dydxstreamcli
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"strconv"
 	"strings"
@@ -64,7 +64,7 @@ func (s *Stream) Orders() chan public.OrderbookResponse {
 					[]string{realtime.ORDERBOOK},
 					[]string{fmt.Sprintf("%s-USD", strings.ToUpper(s.mar.Ass()))},
 					nil,
-					log.New(ioutil.Discard, "", 0),
+					log.New(io.Discard, "", 0),
 				)
 				if err != nil {
 					panic(err)
@@ -139,7 +139,7 @@ func (s *Stream) Trades() chan *trades.Trades {
 					[]string{realtime.TRADES},
 					[]string{fmt.Sprintf("%s-USD", strings.ToUpper(s.mar.Ass()))},
 					nil,
-					log.New(ioutil.Discard, "", 0),
+					log.New(io.Discard, "", 0),
 				)
 				if err != nil {
 					panic(err)

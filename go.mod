@@ -1,6 +1,6 @@
 module github.com/phoebetron/stream
 
-go 1.18
+go 1.20
 
 require (
 	github.com/go-numb/go-dydx v0.0.0-20220329194222-4f7ad846fde0
