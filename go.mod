@@ -8,7 +8,7 @@ require (
 	github.com/phoebetron/dydxv3 v0.5.0
 	github.com/phoebetron/ftxapi v0.1.1
 	github.com/phoebetron/trades v0.8.0
-	google.golang.org/protobuf v1.28.1
+	google.golang.org/protobuf v1.29.0
 )
 
 require (
