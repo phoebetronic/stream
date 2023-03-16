@@ -7,11 +7,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/phoebetron/stream/dydxstreamcli"
-	"github.com/phoebetron/stream/ftxstreamcli"
-	"github.com/phoebetron/stream/merger"
-	"github.com/phoebetron/trades/typ/market"
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/stream/dydxstreamcli"
+	"github.com/phoebetronic/stream/merger"
+	"github.com/phoebetronic/trades/typ/market"
+	"github.com/phoebetronic/trades/typ/trades"
 )
 
 func main() {
@@ -19,22 +18,11 @@ func main() {
 		Mar: market.New(market.Config{
 			Exc: "dydx",
 			Ass: "eth",
-			Dur: 1 * time.Second,
-		}),
-	})
-
-	ftx := ftxstreamcli.New(ftxstreamcli.Config{
-		Mar: market.New(market.Config{
-			Exc: "ftx",
-			Ass: "eth",
-			Dur: 1 * time.Second,
+			Dur: 250 * time.Millisecond,
 		}),
 	})
 
 	str := merger.New(merger.Config{
-		Src: map[string]chan *trades.Trades{
-			"ftx": ftx.Trades(),
-		},
 		Dst: map[string]chan *trades.Trades{
 			"dydx": dyd.Trades(),
 		},
@@ -60,28 +48,20 @@ func main() {
 		fmt.Printf("\n")
 	}
 }
-
 ```
 
 ```
 $ go run main.go
-src (ftx/eth)
-    TR 1573.500000 (2022-09-05 13:04:57.215866 +0000 UTC)
-    TR 1573.500000 (2022-09-05 13:04:57.216515 +0000 UTC)
 dst (dydx/eth)
     TR 1573.400024 (2022-09-05 13:04:57 +0000 UTC)
 
 
 
-src (ftx/eth)
-    TR 1573.599976 (2022-09-05 13:04:58.050723 +0000 UTC)
 dst (dydx/eth)
     TR 1573.400024 (2022-09-05 13:04:58 +0000 UTC)
 
 
 
-src (ftx/eth)
-    TR 1573.500000 (2022-09-05 13:04:59.234147 +0000 UTC)
 dst (dydx/eth)
     TR 1573.599976 (2022-09-05 13:04:59.549 +0000 UTC)
     TR 1573.699951 (2022-09-05 13:04:59.549 +0000 UTC)

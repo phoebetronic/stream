@@ -1,6 +1,6 @@
 package dydxstreamcli
 
-import "github.com/phoebetron/trades/typ/market"
+import "github.com/phoebetronic/trades/typ/market"
 
 type Config struct {
 	Mar market.Market

@@ -1,6 +1,6 @@
 package stream
 
-import "github.com/phoebetron/trades/typ/trades"
+import "github.com/phoebetronic/trades/typ/trades"
 
 type Trades struct {
 	Src map[string]*trades.Trades

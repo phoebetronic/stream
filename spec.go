@@ -2,7 +2,7 @@ package stream
 
 import (
 	"github.com/go-numb/go-dydx/public"
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/trades/typ/trades"
 )
 
 type Stream interface {

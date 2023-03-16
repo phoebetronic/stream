@@ -1,8 +1,8 @@
 package volume
 
 import (
-	"github.com/phoebetron/stream"
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/stream"
+	"github.com/phoebetronic/trades/typ/trades"
 )
 
 type Volume struct {

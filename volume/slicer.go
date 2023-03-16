@@ -1,6 +1,6 @@
 package volume
 
-import "github.com/phoebetron/stream"
+import "github.com/phoebetronic/stream"
 
 type Slicer struct {
 	his int
