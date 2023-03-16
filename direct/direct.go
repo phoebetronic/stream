@@ -3,7 +3,7 @@ package direct
 import (
 	"time"
 
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/trades/typ/trades"
 )
 
 type Direct struct {

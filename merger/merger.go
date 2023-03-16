@@ -1,10 +1,10 @@
 package merger
 
 import (
-	"github.com/phoebetron/stream"
-	"github.com/phoebetron/stream/direct"
-	"github.com/phoebetron/stream/volume"
-	"github.com/phoebetron/trades/typ/trades"
+	"github.com/phoebetronic/stream"
+	"github.com/phoebetronic/stream/direct"
+	"github.com/phoebetronic/stream/volume"
+	"github.com/phoebetronic/trades/typ/trades"
 )
 
 type Merger struct {

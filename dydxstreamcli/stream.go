@@ -11,11 +11,11 @@ import (
 
 	"github.com/go-numb/go-dydx/public"
 	"github.com/go-numb/go-dydx/realtime"
-	"github.com/phoebetron/dydxv3/client"
-	"github.com/phoebetron/dydxv3/client/public/trade"
-	"github.com/phoebetron/trades/typ/market"
-	"github.com/phoebetron/trades/typ/trades"
-	"github.com/phoebetron/trades/typ/trades/buffer"
+	"github.com/phoebetronic/dydxv3/client"
+	"github.com/phoebetronic/dydxv3/client/public/trade"
+	"github.com/phoebetronic/trades/typ/market"
+	"github.com/phoebetronic/trades/typ/trades"
+	"github.com/phoebetronic/trades/typ/trades/buffer"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
