@@ -6,7 +6,7 @@ require (
 	github.com/go-numb/go-dydx v0.0.0-20220329194222-4f7ad846fde0
 	github.com/phoebetronic/dydxv3 v0.5.2
 	github.com/phoebetronic/trades v0.8.1
-	google.golang.org/protobuf v1.29.0
+	google.golang.org/protobuf v1.30.0
 )
 
 require (
